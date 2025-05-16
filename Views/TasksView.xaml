@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TP_M2I_DOTNET.ViewModels"
+             xmlns:model="clr-namespace:TP_M2I_DOTNET.Models"
+             x:Class="TP_M2I_DOTNET.Views.TasksView"
+             Title="TasksView"
+             Appearing="OnAppear"
+             x:DataType="vm:TasksViewModel">
+    <VerticalStackLayout>
+        <Picker
+            Title="Filter by Status"
+            SelectedItem="{Binding SelectedStatusFilter}"
+            ItemsSource="{Binding StatusFilterList}" />
+        <ScrollView>
+            <VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding DisplayedTasks}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:TaskTP">
+                            <Frame
+                                Margin="10,5"
+                                Padding="15"
+                                CornerRadius="12"
+                                BorderColor="#8e24aa"
+                                BackgroundColor="#f3e5f5"
+                                HasShadow="True">
+                                <VerticalStackLayout>
+                                    <Label
+                                        Text="{Binding Title}"
+                                        FontSize="22"
+                                        FontAttributes="Bold"
+                                        TextColor="#4a148c"
+                                        HorizontalOptions="Start" />
+                                    <Label
+                                        Text="{Binding Description}"
+                                        FontSize="16"
+                                        TextColor="#6a1b9a"
+                                        HorizontalOptions="Start"/>
+                                    <Label
+                                        Text="{Binding DueDate, StringFormat='À rendre le : {0:dd/MM/yyyy}'}"
+                                        FontSize="14"
+                                        TextColor="#8e24aa"
+                                        HorizontalOptions="End"/>
+                                    <Label
+                                        Text="{Binding Priority, StringFormat='Priorité : {0}'}"
+                                        FontSize="14"
+                                        TextColor="#7b1fa2"
+                                        HorizontalOptions="Start"/>
+                                    <Label
+                                        Text="{Binding Status, StringFormat='Statut : {0}'}"
+                                        FontSize="14"
+                                        TextColor="#7b1fa2"
+                                        HorizontalOptions="Start"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentPage>
