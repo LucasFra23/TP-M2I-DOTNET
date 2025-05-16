@@ -8,6 +8,11 @@
              Appearing="OnAppear"
              x:DataType="vm:TasksViewModel">
     <VerticalStackLayout>
+        <Button
+            Text="Créer une tâche"
+            Command="{Binding GoToCreateTaskCommand}"
+            Margin="10,10,10,0"
+            HorizontalOptions="Center"/>
         <Picker
             Title="Filter by Status"
             SelectedItem="{Binding SelectedStatusFilter}"
@@ -24,6 +29,10 @@
                                 BorderColor="#8e24aa"
                                 BackgroundColor="#f3e5f5"
                                 HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=ShowTaskDetailCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
                                 <VerticalStackLayout>
                                     <Label
                                         Text="{Binding Title}"
@@ -31,16 +40,6 @@
                                         FontAttributes="Bold"
                                         TextColor="#4a148c"
                                         HorizontalOptions="Start" />
-                                    <Label
-                                        Text="{Binding Description}"
-                                        FontSize="16"
-                                        TextColor="#6a1b9a"
-                                        HorizontalOptions="Start"/>
-                                    <Label
-                                        Text="{Binding DueDate, StringFormat='À rendre le : {0:dd/MM/yyyy}'}"
-                                        FontSize="14"
-                                        TextColor="#8e24aa"
-                                        HorizontalOptions="End"/>
                                     <Label
                                         Text="{Binding Priority, StringFormat='Priorité : {0}'}"
                                         FontSize="14"

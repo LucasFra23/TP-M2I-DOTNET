@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:vm="clr-namespace:TP_M2I_DOTNET.ViewModels"
+            x:Class="TP_M2I_DOTNET.Views.CreateTaskView"  
+            Title="CreateTaskView">
+    <ContentPage.BindingContext>
+        <vm:CreateTaskViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="18">
+            <Label Text="Créer une nouvelle tâche"  
+              FontSize="28"  
+              FontAttributes="Bold"  
+              TextColor="#6a1b9a"  
+              HorizontalOptions="Center" />
+
+            <Entry Placeholder="Titre"  
+                   x:Name="TitleEntry"  
+                   FontSize="18"  
+                   BackgroundColor="#f3e5f5"  
+                   Margin="0,10,0,0"
+                   Text="{Binding Title, Mode=TwoWay}" />
+
+            <Editor Placeholder="Description"  
+               x:Name="DescriptionEditor"  
+               FontSize="16"  
+               AutoSize="TextChanges"  
+               BackgroundColor="#f3e5f5"  
+               HeightRequest="80" 
+               Text="{Binding Description, Mode=TwoWay}"/>
+
+            <DatePicker x:Name="DueDatePicker"  
+                   Format="dd/MM/yyyy"  
+                   Margin="0,10,0,0"
+                   Date="{Binding DueDate, Mode=TwoWay}" />
+
+            <HorizontalStackLayout Spacing="18">
+                <VerticalStackLayout>
+                    <Label Text="Priorité" FontAttributes="Bold" />
+                    <Picker x:Name="PriorityPicker"  
+                            Title="Choisir"  
+                            ItemsSource="{Binding Priorities}" 
+                            SelectedItem="{Binding Priority, Mode=TwoWay}" />
+                </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <Label Text="Statut" FontAttributes="Bold" />
+                    <Picker x:Name="StatusPicker"  
+                       Title="Choisir"  
+                       ItemsSource="{Binding Statuses}" 
+                       SelectedItem="{Binding Status, Mode=TwoWay}"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+
+            <Button Text="Créer"  
+               x:Name="CreateButton"  
+               BackgroundColor="#8e24aa"  
+               TextColor="White"  
+               FontAttributes="Bold"  
+               CornerRadius="8"  
+               HeightRequest="48"  
+               Margin="0,20,0,0"
+               Command="{Binding CreateTaskCommand}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

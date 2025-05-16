@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_M2I_DOTNET.Api;
 using TP_M2I_DOTNET.Models;
+using TP_M2I_DOTNET.Views;
 
 namespace TP_M2I_DOTNET.ViewModels
 {
@@ -21,7 +22,7 @@ namespace TP_M2I_DOTNET.ViewModels
         public List<Models.TaskStatus?> StatusFilterList { get; } = new() { null, Models.TaskStatus.todo, Models.TaskStatus.in_progress, Models.TaskStatus.done };
 
         [ObservableProperty]
-        private Models.TaskStatus? _selectedStatusFilter;
+        private Models.TaskStatus? selectedStatusFilter;
 
         public TasksApi TasksApi { get; set; }
 
@@ -31,7 +32,7 @@ namespace TP_M2I_DOTNET.ViewModels
             DisplayedTasks = new();
             TasksApi = tasksApi;
             _logger = logger;
-            _selectedStatusFilter = null;
+            SelectedStatusFilter = null;
         }
 
         public async void LoadTasks()
@@ -53,7 +54,6 @@ namespace TP_M2I_DOTNET.ViewModels
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erreur lors du chargement des palettes de couleurs");
-                Console.WriteLine($"Erreur lors du chargement des palettes de couleurs : {ex.Message}");
 
                 //Fake tasks for test
                 Tasks.Clear();
@@ -88,6 +88,38 @@ namespace TP_M2I_DOTNET.ViewModels
                 }
             }
             _logger.LogInformation("Nombre de palettes de couleurs affichées : {Count}", DisplayedTasks.Count);
+        }
+
+        [RelayCommand]
+        public async Task ShowTaskDetail(TaskTP task)
+        {
+            if (task == null)
+                return;
+
+            await Shell.Current.GoToAsync(nameof(TaskDetailView), new Dictionary<string, object>
+            {
+                ["Task"] = task
+            });
+        }
+
+        [RelayCommand]
+        public async Task GoToCreateTask()
+        {
+            var createPage = new CreateTaskView(this);
+            await Application.Current.MainPage.Navigation.PushAsync(createPage);
+        }
+
+        public async Task AddTask(TaskTP task)
+        {
+            if (await TasksApi.AddTask(task))
+            {
+                Tasks.Add(task);
+                ApplyStatusFilter();
+            }
+            else
+            {
+                _logger.LogError("Erreur lors de l'ajout de la tâche");
+            }
         }
     }
 }
